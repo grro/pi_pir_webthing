@@ -2,7 +2,7 @@ from webthing import (SingleThing, Property, Thing, Value, WebThingServer)
 import logging
 import RPi.GPIO as GPIO
 from datetime import datetime
-
+import tornado.ioloop
 
 
 class MotionSensor(Thing):
@@ -23,6 +23,9 @@ class MotionSensor(Thing):
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.gpio_number, GPIO.IN)
         GPIO.add_event_detect(self.gpio_number, GPIO.BOTH, callback=self.__update, bouncetime=5)
+        self.is_motion = False
+
+        self.loop = tornado.ioloop.IOLoop.current()
 
         self.motion = Value(False)
         self.add_property(
@@ -51,12 +54,14 @@ class MotionSensor(Thing):
         self.__update("")
 
     def __update(self, channel):
-        is_motion = GPIO.input(self.gpio_number)
-        logging.info("state updated: " + str(is_motion))
-        if is_motion:
+        self.is_motion = GPIO.input(self.gpio_number)
+        logging.info("state updated: " + str(self.is_motion))
+        self.loop.add_timeout(4000, self.__broadcast)
+
+    def __broadcast(self):
+        if self.is_motion:
             self.motion.notify_of_external_update(True)
-            now = datetime.now().isoformat()
-            self.last_motion.notify_of_external_update(now)
+            self.last_motion.notify_of_external_update(datetime.now().isoformat())
         else:
             self.motion.notify_of_external_update(False)
 
