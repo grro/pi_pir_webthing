@@ -31,7 +31,7 @@ setup(
         ]
     },
     keywords=[
-        'webthings', 'home automation', 'PIR', 'motion', 'sensor'
+        'webthings', 'home automation', 'PIR', 'motion', 'sensor', 'movement'
     ],
     install_requires=[
         'webthing',

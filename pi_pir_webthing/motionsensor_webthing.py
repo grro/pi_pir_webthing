@@ -43,8 +43,8 @@ class MotionSensor(Thing):
                      self.last_motion,
                      metadata={
                          'title': 'last_motion',
-                         "type": "datetime",
-                         'description': 'The time of last movement',
+                         "type": "String",
+                         'description': 'The date time of last movement',
                          'readOnly': True,
                      }))
         self.__update("")
