@@ -2,6 +2,8 @@ from webthing import (SingleThing, Property, Thing, Value, WebThingServer)
 import logging
 import RPi.GPIO as GPIO
 from datetime import datetime
+import tornado.ioloop
+
 
 
 class MotionSensor(Thing):
@@ -48,6 +50,11 @@ class MotionSensor(Thing):
                          'readOnly': True,
                      }))
         self.__update("")
+        self.timer = tornado.ioloop.PeriodicCallback(
+            self.__update,
+            240000
+        )
+        self.timer.start()
 
     def __update(self, channel):
         is_motion = GPIO.input(self.gpio_number)
@@ -58,6 +65,8 @@ class MotionSensor(Thing):
         else:
             self.motion.notify_of_external_update(False)
 
+    def cancel_update_level_task(self):
+        self.timer.stop()
 
 def run_server(port, gpio_number, description):
     motion_sensor = MotionSensor(gpio_number, description)
@@ -67,6 +76,7 @@ def run_server(port, gpio_number, description):
         server.start()
     except KeyboardInterrupt:
         logging.debug('canceling the sensor update looping task')
+        motion_sensor.cancel_update_level_task()
         logging.info('stopping the server')
         server.stop()
         logging.info('done')
