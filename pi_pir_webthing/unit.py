@@ -46,3 +46,6 @@ def deregister(packagename, port):
     except Exception as e:
         pass
 
+def printlog(packagename, port):
+    service = packagename + "_" + str(port) + ".service"
+    system("sudo journalctl -f -u " + service)

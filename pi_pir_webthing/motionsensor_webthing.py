@@ -25,8 +25,6 @@ class MotionSensor(Thing):
         GPIO.add_event_detect(self.gpio_number, GPIO.BOTH, callback=self.__update, bouncetime=5)
         self.is_motion = False
 
-        self.loop = tornado.ioloop.IOLoop.current()
-
         self.motion = Value(False)
         self.add_property(
         Property(self,
@@ -51,19 +49,22 @@ class MotionSensor(Thing):
                          'description': 'The date time of last movement',
                          'readOnly': True,
                      }))
-        self.__update("")
+        self.ioloop = tornado.ioloop.IOLoop.current()
 
     def __update(self, channel):
-        self.is_motion = GPIO.input(self.gpio_number)
-        logging.info("state updated: " + str(self.is_motion))
-        self.loop.add_timeout(4000, self.__broadcast)
+        if GPIO.input(self.gpio_number):
+            logging.info("motion detected")
+            self.ioloop.add_callback(self.__update_motion_prop, True)
+        else:
+            self.ioloop.add_callback(self.__update_motion_prop, False)
 
-    def __broadcast(self):
-        if self.is_motion:
+    def __update_motion_prop(self, is_motion):
+        if is_motion:
             self.motion.notify_of_external_update(True)
             self.last_motion.notify_of_external_update(datetime.now().isoformat())
         else:
             self.motion.notify_of_external_update(False)
+        logging.info("state updated: " + str(is_motion))
 
 
 def run_server(port, gpio_number, description):
@@ -73,7 +74,6 @@ def run_server(port, gpio_number, description):
         logging.info('starting the server')
         server.start()
     except KeyboardInterrupt:
-        logging.debug('canceling the sensor update looping task')
         logging.info('stopping the server')
         server.stop()
         logging.info('done')

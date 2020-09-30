@@ -3,7 +3,7 @@ from os import path
 
 PACKAGENAME = 'pi_pir_webthing'
 ENTRY_POINT = "pir"
-DESCRIPTION = "A web connected PIR motion sensor detecting movement Raspberry Pi"
+DESCRIPTION = "A web connected PIR motion sensor detecting movement running on Raspberry Pi"
 
 
 this_directory = path.abspath(path.dirname(__file__))
