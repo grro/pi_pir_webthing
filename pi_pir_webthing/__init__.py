@@ -1,4 +1,6 @@
 import argparse
+import logging
+import os
 from pi_pir_webthing.motionsensor_webthing import run_server
 from pi_pir_webthing.unit import register, deregister, printlog
 
@@ -30,7 +32,7 @@ def main():
 
 if __name__ == '__main__':
     log_level = os.environ.get("LOGLEVEL", "INFO")
-    logging.basicConfig(format='%(asctime)s %(levelname)-8s %(message)s', level=log_level, datefmt='%Y-%m-%d %H:%M:%S')
+    logging.basicConfig(format='%(asctime)s %(levelname)-8s %(message)s', level=logging.getLevelName(log_level), datefmt='%Y-%m-%d %H:%M:%S')
 
     main()
 
