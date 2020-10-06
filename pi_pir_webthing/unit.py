@@ -9,7 +9,7 @@ After=syslog.target
 
 [Service]
 Type=simple
-ExecStart=$entrypoint --command listen --port $port --gpio $gpio_number
+ExecStart=$entrypoint --command listen --port $port --gpio $gpio_number --name $name
 SyslogIdentifier=$packagename
 StandardOutput=syslog
 StandardError=syslog
@@ -21,8 +21,8 @@ WantedBy=multi-user.target
 ''')
 
 
-def register(packagename, entrypoint, port, gpio_number):
-    unit = UNIT_TEMPLATE.substitute(packagename=packagename, entrypoint=entrypoint, port=port, gpio_number=gpio_number)
+def register(packagename, entrypoint, port, name, gpio_number):
+    unit = UNIT_TEMPLATE.substitute(packagename=packagename, entrypoint=entrypoint, port=port, gpio_number=gpio_number, name=name)
     service = packagename + "_" + str(port) + ".service"
     unit_file_fullname = str(pathlib.Path("/", "etc", "systemd", "system", service))
     with open(unit_file_fullname, "w") as file:

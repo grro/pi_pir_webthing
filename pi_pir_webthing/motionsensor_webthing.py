@@ -10,11 +10,11 @@ class MotionSensor(Thing):
     # regarding capabilities refer https://iot.mozilla.org/schemas
     # there is also another schema registry http://iotschema.org/docs/full.html not used by webthing
 
-    def __init__(self, gpio_number, description):
+    def __init__(self, gpio_number, name, description):
         Thing.__init__(
             self,
             'urn:dev:ops:motionSensor-1',
-            'MotionSensor',
+            'Motion '+ name,
             ['MotionSensor'],
             description
         )
@@ -34,7 +34,7 @@ class MotionSensor(Thing):
                      '@type': 'MotionProperty',
                      'title': 'motion',
                      "type": "boolean",
-                     'description': 'Whether motion is detected',
+                     'description': 'Whether ' + name  + ' motion is detected',
                      'readOnly': True,
                  }))
 
@@ -67,8 +67,8 @@ class MotionSensor(Thing):
         logging.info("state updated: " + str(is_motion))
 
 
-def run_server(port, gpio_number, description):
-    motion_sensor = MotionSensor(gpio_number, description)
+def run_server(port, gpio_number, name, description):
+    motion_sensor = MotionSensor(gpio_number, name, description)
     server = WebThingServer(SingleThing(motion_sensor), port=port)
     try:
         logging.info('starting the server')
