@@ -17,10 +17,6 @@ curl http://192.168.0.23:9544/properties
 
 The RaspberryPi/PIR sensor hardware setup and wiring may look like [HC SR501 example](docs/layout.png). 
 
-![pir](docs/pir.png)
-
-In the example above a HC SR501 PIR Motion Sensor has been installed using a [modified GIRA System 55 blind cover with a cover Frame](docs/gira.png).  
-
 To install the software you may use [PIP](https://realpython.com/what-is-pip/) package manager such as shown below
 ```
 sudo pip install pi_pir_webthing
