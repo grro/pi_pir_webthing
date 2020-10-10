@@ -43,16 +43,15 @@ def main():
         else:
             printlog(PACKAGENAME, int(args.port))
     else:
-        print("usage " + ENTRY_POINT + " --help")
-        print("e.g.")
+        print("usage " + ENTRY_POINT + " --help for command options")
+        print("examples")
         for service_info in list_installed(PACKAGENAME):
             port = service_info[1]
             is_active = service_info[2]
-            print(ENTRY_POINT + " --command log")
+            print(ENTRY_POINT + " --command log --port " + port)
             print(ENTRY_POINT + " --command deregister --port " + port + " --gpio 14")
-            if is_active:
+            if not is_active:
                 print(ENTRY_POINT + " --command listen --port " + port + " --gpio 14")
-
 
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s %(levelname)-8s %(message)s', level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S')
