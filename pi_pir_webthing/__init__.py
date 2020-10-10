@@ -8,6 +8,17 @@ ENTRY_POINT = "pir"
 DESCRIPTION = "A web connected PIR motion sensor detecting movement running on Raspberry Pi"
 
 
+def print_info():
+    print("usage " + ENTRY_POINT + " --help for command options")
+    print("examples")
+    for service_info in list_installed(PACKAGENAME):
+        port = service_info[1]
+        is_active = service_info[2]
+        print("sudo " + ENTRY_POINT + " --command log --port " + port)
+        print("sudo " + ENTRY_POINT + " --command deregister --port " + port + " --gpio 14")
+        if not is_active:
+            print("sudo " + ENTRY_POINT + " --command listen --port " + port + " --gpio 14")
+
 def main():
     parser = argparse.ArgumentParser(description=DESCRIPTION)
     parser.add_argument('--command', metavar='command', required=False, type=str, help='the command. Supported commands are: listen (run the webthing service), register (register and starts the webthing service as a systemd unit, deregister (deregisters the systemd unit), log (prints the log)')
@@ -16,7 +27,9 @@ def main():
     parser.add_argument('--name', metavar='name', required=False, type=str, default="", help='the name')
     args = parser.parse_args()
 
-    if args.command == 'listen':
+    if args.command is None:
+        print_info()
+    elif args.command == 'listen':
         if args.port is None:
             print("--port is mandatory")
         elif args.gpio is None:
@@ -43,16 +56,10 @@ def main():
         else:
             printlog(PACKAGENAME, int(args.port))
     else:
-        print("usage " + ENTRY_POINT + " --help for command options")
-        print("examples")
-        for service_info in list_installed(PACKAGENAME):
-            port = service_info[1]
-            is_active = service_info[2]
-            print(ENTRY_POINT + " --command log --port " + port)
-            print(ENTRY_POINT + " --command deregister --port " + port + " --gpio 14")
-            if not is_active:
-                print(ENTRY_POINT + " --command listen --port " + port + " --gpio 14")
+        print("unsupported command")
+        print_info()
 
+        
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s %(levelname)-8s %(message)s', level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S')
 
