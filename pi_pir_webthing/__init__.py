@@ -15,8 +15,10 @@ def print_info():
         port = service_info[1]
         is_active = service_info[2]
         print("sudo " + ENTRY_POINT + " --command log --port " + port)
-        print("sudo " + ENTRY_POINT + " --command deregister --port " + port + " --gpio 14")
-        if not is_active:
+        if is_active:
+            print("sudo " + ENTRY_POINT + " --command deregister --port " + port)
+        else:
+            print("sudo " + ENTRY_POINT + " --command register --port " + port + " --gpio 14")
             print("sudo " + ENTRY_POINT + " --command listen --port " + port + " --gpio 14")
 
 def main():
@@ -59,7 +61,7 @@ def main():
         print("unsupported command")
         print_info()
 
-        
+
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s %(levelname)-8s %(message)s', level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S')
 
