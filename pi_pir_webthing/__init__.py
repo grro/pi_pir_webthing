@@ -10,15 +10,16 @@ DESCRIPTION = "A web connected PIR motion sensor detecting movement running on R
 
 def print_info():
     print("usage " + ENTRY_POINT + " --help for command options")
-    print("examples")
-    print("sudo " + ENTRY_POINT + " --command register --port 9544 --gpio 14")
-    print("sudo " + ENTRY_POINT + " --command listen --port 9544 --gpio 14")
+    print("example")
+    print(" sudo " + ENTRY_POINT + " --command register --port 9544 --gpio 14")
+    print(" sudo " + ENTRY_POINT + " --command listen --port 9544 --gpio 14")
+    print("registered")
     for service_info in list_installed(PACKAGENAME):
         port = service_info[1]
         is_active = service_info[2]
-        print("sudo " + ENTRY_POINT + " --command log --port " + port)
+        print(" sudo " + ENTRY_POINT + " --command log --port " + port)
         if is_active:
-            print("sudo " + ENTRY_POINT + " --command deregister --port " + port)
+            print(" sudo " + ENTRY_POINT + " --command deregister --port " + port)
 
 def main():
     parser = argparse.ArgumentParser(description=DESCRIPTION)
