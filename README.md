@@ -15,14 +15,18 @@ curl http://192.168.0.23:9544/properties
 }
 ```
 
-Regarding the RaspberryPi/PIR sensor hardware setup and wiring please refer tutorials such as [How to Interface a PIR Motion Sensor With Raspberry Pi GPIO](https://maker.pro/raspberry-pi/tutorial/how-to-interface-a-pir-motion-sensor-with-raspberry-pi-gpio)
+The RaspberryPi/PIR sensor hardware setup and wiring may look like [HC SR501 example](docs/layout.png). 
 
-To install this software you may use [PIP](https://realpython.com/what-is-pip/) package manager such as shown below
+![pir](docs/pir.png)
+
+In the example above a HC SR501 PIR Motion Sensor has been installed using a [modified GIRA System 55 blind cover with a cover Frame](docs/gira.png).  
+
+To install the software you may use [PIP](https://realpython.com/what-is-pip/) package manager such as shown below
 ```
 sudo pip install pi_pir_webthing
 ```
 
-After this installation you may start the webthing http endpoint inside your python code or via command line using
+After this installation you may start the webthing http endpoint inside your python code or via command line using 
 ```
 sudo pir --command listen --port 9544 --gpio 14
 ```
