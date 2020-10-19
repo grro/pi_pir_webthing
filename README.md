@@ -10,7 +10,7 @@ The pi_pir_webthing package exposes an http webthing endpoint which supports det
 curl http://192.168.0.23:9544/properties 
 
 {
-   "time": false,
+   "motion": true,
    "last_motion": "2020-09-28T08:04:02.330388"
 }
 ```
