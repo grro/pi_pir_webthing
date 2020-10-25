@@ -15,7 +15,7 @@ curl http://192.168.0.23:9544/properties
 }
 ```
 
-The RaspberryPi/PIR sensor hardware setup and wiring may look like [HC SR501 example](docs/layout.png). 
+The RaspberryPi/PIR sensor hardware setup and wiring may look like [HC SR501 example](https://github.com/grro/pi_pir_webthing/blob/master/docs/layout.png). 
 
 To install the software you may use [PIP](https://realpython.com/what-is-pip/) package manager such as shown below
 ```
