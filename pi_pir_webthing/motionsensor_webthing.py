@@ -67,9 +67,9 @@ class MotionSensor(Thing):
         logging.info("state updated: " + str(is_motion))
 
 
-def run_server(port, gpio_number, name, description):
+def run_server(hostname, port, gpio_number, name, description):
     motion_sensor = MotionSensor(gpio_number, name, description)
-    server = WebThingServer(SingleThing(motion_sensor), port=port)
+    server = WebThingServer(SingleThing(motion_sensor), hostname=hostname, port=port)
     try:
         logging.info('starting the server')
         server.start()
