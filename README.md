@@ -26,7 +26,7 @@ After this installation you may start the webthing http endpoint inside your pyt
 ```
 sudo pir --command listen --hostname 192.168.0.23 --port 9544 --gpio 14
 ```
-Here, the webthing API will be bind to the hostname 192.168.0.23 with local port 9544 and be connected to the PIR pin using gpio 14
+Here, the webthing API will be bind hostname 192.168.0.23 with local port 9544 and be connected to the PIR pin using gpio 14
 
 Alternatively to the *listen* command, you can use the *register* command to register and start the webthing service as systemd unit. 
 By doing this the webthing service will be started automatically on boot. Starting the server manually using the *listen* command is no longer necessary. 
