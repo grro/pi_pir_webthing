@@ -16,7 +16,7 @@ After=syslog.target network.target
 
 [Service]
 Type=simple
-ExecStart=$entrypoint --command listen --hostname $hostname --verbose $verbose --port $port --gpio $gpio_number --name $name
+ExecStart=$entrypoint --command listen --hostname $hostname --verbose $verbose --port $port --gpio $gpio --name $name
 SyslogIdentifier=$packagename
 StandardOutput=syslog
 StandardError=syslog
@@ -46,7 +46,7 @@ class PirApp(App):
             return True
         elif args.command == 'register' and (args.port > 0):
             print("register " + self.packagename + "/" + args.name  + " on " + hostname + "/" + str(port) + "/gpio " + str(args.gpio) + " and starting it")
-            unit = UNIT_TEMPLATE.substitute(packagename=self.packagename, entrypoint=self.entrypoint, hostname=hostname, port=port, verbose=verbose, gpio_number=args.gpio_number, name=args.name)
+            unit = UNIT_TEMPLATE.substitute(packagename=self.packagename, entrypoint=self.entrypoint, hostname=hostname, port=port, verbose=verbose, gpio=args.gpio, name=args.name)
             self.unit.register(hostname, port, unit)
             return True
         else:
