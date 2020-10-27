@@ -14,7 +14,7 @@ class MotionSensor(Thing):
         Thing.__init__(
             self,
             'urn:dev:ops:motionSensor-1',
-            'Motion Sensor '+ name,
+            'Motion ' + name + ' Sensor',
             ['MotionSensor'],
             description
         )
