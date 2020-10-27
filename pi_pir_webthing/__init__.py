@@ -33,7 +33,7 @@ class PirApp(App):
 
     def do_add_argument(self, parser):
         parser.add_argument('--gpio', metavar='gpio', required=False, type=int, help='the gpio number wired to the device')
-        parser.add_argument('--name', metavar='name', required=False, default='Motion Sensor', type=int, help='the name of the sensor')
+        parser.add_argument('--name', metavar='name', required=False, default='Motion Sensor', type=str, help='the name of the sensor')
 
 
     def do_additional_listen_example_params(self):
