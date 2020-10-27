@@ -40,7 +40,7 @@ class PirApp(App):
         return "--gpio 14"
 
     def do_process_command(self, command:str, hostname: str, port: int, verbose: bool, args) -> bool:
-        if command == 'listen' and (args.speedtest_period > 0 or args.connecttest_period > 0):
+        if command == 'listen' and (args.port > 0):
             print("running " + self.packagename + "/" + args.name + " on " + hostname + "/" + str(port) + "/gpio " + str(args.gpio))
             run_server(hostname, port, int(args.gpio), args.name, self.description)
             return True
