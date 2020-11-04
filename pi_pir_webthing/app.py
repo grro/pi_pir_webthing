@@ -1,6 +1,6 @@
 from os import system, remove
 from os import listdir
-from abc import ABC, abstractmethod
+from abc import ABC
 import pathlib
 import logging
 import subprocess

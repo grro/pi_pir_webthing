@@ -64,7 +64,6 @@ class MotionSensor(Thing):
             self.last_motion.notify_of_external_update(datetime.now().isoformat())
         else:
             self.motion.notify_of_external_update(False)
-        logging.info("state updated: " + str(is_motion))
 
 
 def run_server(hostname, port, gpio_number, name, description):
