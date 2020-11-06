@@ -32,7 +32,7 @@ class MotionSensor(Thing):
                  self.motion,
                  metadata={
                      '@type': 'MotionProperty',
-                     'title': 'motion',
+                     'title': 'Motion detected',
                      "type": "boolean",
                      'description': 'Whether ' + name  + ' motion is detected',
                      'readOnly': True,
@@ -41,12 +41,13 @@ class MotionSensor(Thing):
         self.last_motion = Value(datetime.now().isoformat())
         self.add_property(
             Property(self,
-                     'last_motion',
+                     'motion_last_seen',
                      self.last_motion,
                      metadata={
-                         'title': 'last_motion',
+                         'title': 'Motion last seen date time',
                          "type": "string",
-                         'description': 'The date time of last movement',
+                         'unit': 'datetime',
+                         'description': 'The ISO 8601 date time of last movement',
                          'readOnly': True,
                      }))
         self.ioloop = tornado.ioloop.IOLoop.current()
