@@ -27,16 +27,16 @@ class MotionSensor(Thing):
 
         self.motion = Value(False)
         self.add_property(
-        Property(self,
-                 'motion',
-                 self.motion,
-                 metadata={
-                     '@type': 'MotionProperty',
-                     'title': 'Motion detected',
-                     "type": "boolean",
-                     'description': 'Whether ' + name  + ' motion is detected',
-                     'readOnly': True,
-                 }))
+            Property(self,
+                     'motion',
+                     self.motion,
+                     metadata={
+                         '@type': 'MotionProperty',
+                         'title': 'Motion detected',
+                         "type": "boolean",
+                         'description': 'Whether ' + name  + ' motion is detected',
+                         'readOnly': True,
+                     }))
 
         self.last_motion = Value(datetime.now().isoformat())
         self.add_property(
