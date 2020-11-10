@@ -44,7 +44,7 @@ class MotionSensor(Thing):
                      'motion_last_seen',
                      self.last_motion,
                      metadata={
-                         'title': 'Motion last seen date time',
+                         'title': 'Motion last seen',
                          "type": "string",
                          'unit': 'datetime',
                          'description': 'The ISO 8601 date time of last movement',
