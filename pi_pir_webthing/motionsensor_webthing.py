@@ -67,9 +67,9 @@ class MotionSensor(Thing):
             self.motion.notify_of_external_update(False)
 
 
-def run_server(hostname, port, gpio_number, name, description):
+def run_server(port, gpio_number, name, description):
     motion_sensor = MotionSensor(gpio_number, name, description)
-    server = WebThingServer(SingleThing(motion_sensor), hostname=hostname, port=port)
+    server = WebThingServer(SingleThing(motion_sensor), port=port, disable_host_validation=True)
     try:
         logging.info('starting the server')
         server.start()

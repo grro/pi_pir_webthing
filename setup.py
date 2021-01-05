@@ -34,7 +34,7 @@ setup(
         'webthings', 'home automation', 'PIR', 'motion', 'sensor', 'movement'
     ],
     install_requires=[
-        'webthing',
+        'webthing==0.15.0',
         'RPi.GPIO'
     ],
     classifiers=[
