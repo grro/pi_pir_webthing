@@ -1,4 +1,4 @@
-FROM python:3-alpine
+FROM python:3
 
 ENV port 8343
 ENV name "?"
@@ -9,8 +9,6 @@ RUN mkdir app
 WORKDIR /etc/app
 ADD *.py /etc/app/
 ADD requirements.txt /etc/app/.
-
-sudo apk add mpc1-dev
 RUN pip install -r requirements.txt
 
 CMD python /etc/app/motionsensor_webthing.py $port $name $gpio_number
