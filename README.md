@@ -16,21 +16,3 @@ curl http://192.168.0.23:9544/properties
 ```
 
 The RaspberryPi/PIR sensor hardware setup and wiring may look like [HC SR501 example](https://github.com/grro/pi_pir_webthing/blob/master/docs/layout.png). 
-
-To install the software you may use[PIP](https://realpython.com/what-is-pip/) package manager such as shown below
-```
-sudo pip install pi_pir_webthing
-```
-
-
-After this installation you may start the webthing http endpoint inside your python code or via command line using 
-```
-sudo pir --command listen --port 9544 --gpio 14
-```
-Here, the webthing API will be bind on port 9544 and be connected to the PIR pin using gpio 14
-
-Alternatively to the *listen* command, you can use the *register* command to register and start the webthing service as systemd unit. 
-By doing this the webthing service will be started automatically on boot. Starting the server manually using the *listen* command is no longer necessary. 
-```
-sudo pir --command register --port 9544 --gpio 14
-```  

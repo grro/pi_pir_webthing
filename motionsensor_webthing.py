@@ -1,16 +1,17 @@
+import sys
 from webthing import (SingleThing, Property, Thing, Value, WebThingServer)
 import logging
-import RPi.GPIO as GPIO
-from datetime import datetime
 import tornado.ioloop
+from motionsensor import MotionSensor
 
 
-class MotionSensor(Thing):
+
+class MotionSensorThing(Thing):
 
     # regarding capabilities refer https://iot.mozilla.org/schemas
     # there is also another schema registry http://iotschema.org/docs/full.html not used by webthing
 
-    def __init__(self, gpio_number, name, description):
+    def __init__(self, description, name, sensor: MotionSensor):
         Thing.__init__(
             self,
             'urn:dev:ops:motionSensor-1',
@@ -19,13 +20,11 @@ class MotionSensor(Thing):
             description
         )
 
-        self.gpio_number = gpio_number
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.gpio_number, GPIO.IN)
-        GPIO.add_event_detect(self.gpio_number, GPIO.BOTH, callback=self.__update, bouncetime=5)
-        self.is_motion = False
+        self.ioloop = tornado.ioloop.IOLoop.current()
+        self.sensor = sensor
+        self.sensor.set_listener(self.on_value_changed)
 
-        self.motion = Value(False)
+        self.motion = Value(sensor.is_motion)
         self.add_property(
             Property(self,
                      'motion',
@@ -38,7 +37,7 @@ class MotionSensor(Thing):
                          'readOnly': True,
                      }))
 
-        self.last_motion = Value(datetime.now().isoformat())
+        self.last_motion = Value(sensor.last_motion_date.isoformat())
         self.add_property(
             Property(self,
                      'motion_last_seen',
@@ -50,25 +49,19 @@ class MotionSensor(Thing):
                          'description': 'The ISO 8601 date time of last movement',
                          'readOnly': True,
                      }))
-        self.ioloop = tornado.ioloop.IOLoop.current()
-
-    def __update(self, channel):
-        if GPIO.input(self.gpio_number):
-            logging.info("motion detected")
-            self.ioloop.add_callback(self.__update_motion_prop, True)
-        else:
-            self.ioloop.add_callback(self.__update_motion_prop, False)
-
-    def __update_motion_prop(self, is_motion):
-        if is_motion:
-            self.motion.notify_of_external_update(True)
-            self.last_motion.notify_of_external_update(datetime.now().isoformat())
-        else:
-            self.motion.notify_of_external_update(False)
 
 
-def run_server(port, gpio_number, name, description):
-    motion_sensor = MotionSensor(gpio_number, name, description)
+    def on_value_changed(self):
+        self.ioloop.add_callback(self._on_value_changed)
+
+    def _on_value_changed(self):
+        self.motion.notify_of_external_update(self.sensor.is_motion)
+        self.last_motion.notify_of_external_update(self.sensor.last_motion_date.isoformat())
+
+
+
+def run_server(description: str, port: int, name: str, gpio_number:int):
+    motion_sensor = MotionSensorThing(description, name, MotionSensor(gpio_number))
     server = WebThingServer(SingleThing(motion_sensor), port=port, disable_host_validation=True)
     try:
         logging.info('starting the server')
@@ -79,3 +72,8 @@ def run_server(port, gpio_number, name, description):
         logging.info('done')
 
 
+if __name__ == '__main__':
+    logging.basicConfig(format='%(asctime)s %(name)-20s: %(levelname)-8s %(message)s', level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S')
+    logging.getLogger('tornado.access').setLevel(logging.ERROR)
+    logging.getLogger('urllib3.connectionpool').setLevel(logging.WARNING)
+    run_server("description", int(sys.argv[1]), sys.argv[2], int(sys.argv[3]))

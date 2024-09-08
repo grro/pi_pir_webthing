@@ -1,14 +1,19 @@
-FROM python:3.9.1-alpine
+FROM python:3-alpine
 
-ENV port 9544
-ENV name pir
+ENV port 8343
+ENV name "?"
+ENV gpio_number "?"
 
-RUN apk add build-base
 
-ADD . /tmp/
-WORKDIR /tmp/
-RUN  python /tmp/setup.py install
-WORKDIR /
-RUN rm -r /tmp/
 
-CMD pir --command listen --port $port --gpio $gpio --name $name
+RUN cd /etc
+RUN mkdir app
+WORKDIR /etc/app
+ADD *.py /etc/app/
+ADD requirements.txt /etc/app/.
+RUN pip install -r requirements.txt
+
+CMD python /etc/app/motionsensor_webthing.py $port $name $gpio_number
+
+
+
